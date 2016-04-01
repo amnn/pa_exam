@@ -288,6 +288,14 @@ And some lemmas relating to how it interacts with narrowing and closure, which m
   $\Infty\compose\alpha_z\compose\gamma_z\leq\Infty$
   \begin{proof}[Proof by contradiction]
     Suppose for a contradiction ${\exists m\in\mathit{Zon}.~\Infty(\alpha_z(\gamma_z(m))) > \Infty(m)}$
+    \begin{itemize}
+      \step[\imps] $\exists1\leq i, j\leq n+1.~m_{ij}=\infty\wedge\alpha_z(\gamma_z(m))_{ij} = \infty$
+      \step[\imps] $\alpha_z(\gamma_z(m))\not\sqsubseteq m$
+      \marginnote{$\alpha_z(\gamma_z(m))_{ij}>m_{ij}$}
+      \step[\contras] $\alpha_z\compose\gamma_z\sqsubseteq\id_{\mathit{Zon}}$
+      \marginnote{sheet 1, q2a}
+      \step[\imps] Such an $m$ cannot exist\qedhere
+    \end{itemize}
   \end{proof}
 \end{lemma}
 
