@@ -314,3 +314,185 @@ And some lemmas relating to how it interacts with narrowing and closure, which m
 \end{lemma}
 
 \subsection{Part (c)}\label{sec:q-1-c}
+
+\begin{prop}
+  $\sqsubseteq_1$ is a preorder\\
+  It suffices to show that
+  \begin{enumerate}[(i)]
+    \item $\forall m\in\mathit{Zon}.~m\sqsubseteq_1 m$
+    \item $\forall m,m^\prime,m^{\prime\prime}\in\mathit{Zon}.~m\sqsubseteq_1m^\prime\wedge m^\prime\sqsubseteq_1m^{\prime\prime}\implies m\sqsubseteq_1m^{\prime\prime}$
+  \end{enumerate}
+
+  \begin{proof}[Proof (i)]
+    Let $m\in\mathit{Zon}$\\
+    \begin{itemize}
+      \step Suppose $m=\bot$, then trivially $m\sqsubseteq_1m$
+      \step Suppose $m\neq\bot$
+      \step[\imps] $\forall1\leq i,j\leq n.~m_{ij} = m_{ij}$
+      \itemsep-.2em
+      \step[\wedge] $\forall1\leq i \leq n+1.~ m_{i,n+1} = m_{i,n+1}\wedge m_{n+1,i}=m_{n+1,i}$
+      \itemsep.5em
+      \step[\imps] $\forall1\leq i,j\leq n.~\min(m_{ij},m_{i,n+1}+m_{n+1,j}) \leq m_{ij}$
+      \itemsep-.2em
+      \step[\wedge] $\forall1\leq i \leq n+1.~ m_{i,n+1} \leq m_{i,n+1}\wedge m_{n+1,i}\leq m_{n+1,i}$
+      \itemsep.5em
+      \step[\imps] $m\sqsubseteq_1m$\qedhere
+    \end{itemize}
+  \end{proof}
+
+  \begin{proof}[Proof (ii)]
+    Let $m,m^\prime,m^{\prime\prime}\in\mathit{Zon}$ s.t. $m\sqsubseteq_1m^\prime$ and $m^\prime\sqsubseteq m^{\prime\prime}$
+    \begin{itemize}
+      \step Suppose $m = \bot$ then trivially $m\sqsubseteq_1m^{\prime\prime}$
+      \step Suppose $m^\prime = \bot\implies m=\bot\implies m\sqsubseteq_1m^{\prime\prime}$
+      \step Suppose $m^{\prime\prime} = \bot\implies m^\prime=\bot\implies m=\bot\implies m\sqsubseteq_1m^{\prime\prime}$
+      \step Now, suppose $m,m^\prime,m^{\prime\prime}\in\mathit{Zon}-\{\bot\}$
+      \step[\imps] $\forall1\leq i,j\leq n.~\min(m_{ij},m_{i,n+1}+m_{n+1,j}) \leq m^\prime_{ij}$
+      \marginnote{Definition of $\sqsubseteq_1$}
+      \itemsep.1em
+      \step[\wedge] $\forall1\leq i \leq n+1.~ m_{i,n+1} \leq m^\prime_{i,n+1}\wedge m_{n+1,i}\leq m^\prime_{n+1,i}$
+      \step[\wedge] $\forall1\leq i,j\leq n.~\min(m^\prime_{ij},m^\prime_{i,n+1}+m^\prime_{n+1,j}) \leq m^{\prime\prime}_{ij}$
+      \step[\wedge] $\forall1\leq i \leq n+1.~ m^\prime_{i,n+1} \leq m^{\prime\prime}_{i,n+1}\wedge m^\prime_{n+1,i}\leq m^{\prime\prime}_{n+1,i}$
+      \itemsep.7em
+      \step[\imps] $\forall1\leq i,j\leq n.$
+      \marginnote{Gathering like terms}
+      \begin{itemize}
+        \itemindent1em
+        \itemsep.1em
+        \step $\min(m_{ij},m_{i,n+1}+m_{n+1,j}) \leq m^\prime_{ij}$
+        \step[\wedge] $\min(m^\prime_{ij},m^\prime_{i,n+1}+m^\prime_{n+1,j}) \leq m^{\prime\prime}_{ij}$
+      \end{itemize}
+      \step[\wedge] $\forall1\leq i \leq n+1.$
+      \begin{itemize}
+        \itemindent1em
+        \itemsep.1em
+        \step $m_{i,n+1} \leq m^\prime_{i,n+1}\wedge m_{n+1,i}\leq m^\prime_{n+1,i}$
+        \step[\wedge] $m^\prime_{i,n+1} \leq m^{\prime\prime}_{i,n+1}\wedge m^\prime_{n+1,i}\leq m^{\prime\prime}_{n+1,i}$
+      \end{itemize}
+      \itemsep.7em
+      \step[\imps] $\forall1\leq i,j\leq n.$
+      \marginnote{Transitivity of $\leq$}
+      \begin{itemize}
+        \itemindent1em
+        \itemsep.1em
+        \step $\min(m_{ij},m_{i,n+1}+m_{n+1,j}) \leq m^\prime_{ij}$
+        \step[\wedge] $\min(m^\prime_{ij},m^\prime_{i,n+1}+m^\prime_{n+1,j}) \leq m^{\prime\prime}_{ij}$
+      \end{itemize}
+      \step[\wedge] $\forall1\leq i \leq n+1.~m_{i,n+1} \leq m^{\prime\prime}_{i,n+1}\wedge m_{n+1,i}\leq m^{\prime\prime}_{n+1,i}$
+    \end{itemize}
+    And, for any $1\leq i,j\leq n$ we have that
+    \begin{align*}
+      m^{\prime\prime}_{ij} & \geq \min(m^\prime_{ij},m^\prime_{i,n+1} + m^\prime_{n+1,j})
+      \mathnote{$m^\prime\sqsubseteq_1m^{\prime\prime}$}
+      \\ & \geq \min(\min(m_{ij}, m_{i,n+1} + m_{n+1,j}), m^\prime_{i,n+1} + m^\prime_{n+1,j})
+      \mathnote{$\forall x.~\min(\text{---},x)$ is monotonic}
+      \\ & = \min(m_{ij}, \min(m_{i,n+1} + m_{n+1,j}, m^\prime_{i,n+1} + m^\prime_{n+1,j}))
+      \mathnote{$\min$ is associative}
+      \\ & = \min(m_{ij}, m_{i,n+1} + m_{n+1,j})
+      \mathnote{$m\sqsubseteq_1m^\prime$\\$\Rightarrow m_{i,n+1}+m_{n+1,j}$\\$\leq m^\prime_{i,n+1}+m_{n+1,j}$\\$\leq m^\prime_{i,n+1}+m^\prime_{n+1,j}$}
+    \end{align*}
+    \begin{itemize}
+      \step[\imps] $\forall1\leq i,j\leq n.~\min(m_{ij},m_{i,n+1}+m_{n+1,j}) \leq m^{\prime\prime}_{ij}$
+      \itemsep-.1em
+      \step[\wedge] $\forall1\leq i \leq n+1.~m_{i,n+1} \leq m^{\prime\prime}_{i,n+1}\wedge m_{n+1,i}\leq m^{\prime\prime}_{n+1,i}$
+      \itemsep.7em
+      \step[\imps] $m\sqsubseteq_1m^{\prime\prime}$\qedhere
+    \end{itemize}
+  \end{proof}
+\end{prop}
+
+\noindent
+\begin{align*}
+  \intertext{Define an operator $\sqcup_1 : \mathit{Zon}\times\mathit{Zon}\to\mathit{Zon}$ by}
+  &&\bot\sqcup_1m & = m = m\sqcup_1\bot &&\text{for any } m\in\mathit{Zon}
+  \intertext{And for $m,m^\prime\in\mathit{Zon}-\{\bot\}$}
+  &(m\sqcup_1m^\prime)_{i,n+1} && = \max(m_{i,n+1},~m^\prime_{i,n+1}) && \text{for }1\leq i\leq n+1 \\
+  &(m\sqcup_1m^\prime)_{n+1,i} && = \max(m_{n+1,i},~m^\prime_{n+1,i}) && \text{for }1\leq i\leq n+1 \\
+  &(m\sqcup_1m^\prime)_{ij} && = \max(\min(m_{ij},~m_{i,n+1}+m_{n+1,j}),&& \text{for }1\leq i,j\leq n \\
+  &&&\phantom{ =\,\max(}\min(m^\prime_{ij},~m^\prime_{i,n+1}+m^\prime_{n+1,j})) \\
+\end{align*}
+
+\begin{prop}
+  $\sqcup_1$ defines a join w.r.t. $\sqsubseteq_1$.\\
+  It suffices to show that:
+  \begin{enumerate}[(i)]
+    \item $\forall m,m^\prime\in\mathit{Zon}.~m\sqsubseteq_1(m\sqcup_1m^\prime)\wedge m^\prime\sqsubseteq_1(m\sqcup_1m^\prime)$
+    \item $\forall m,m^\prime,m^{\prime\prime}\in\mathit{Zon}.~m\sqsubseteq_1m^{\prime\prime}\wedge m^\prime\sqsubseteq_1m^{\prime\prime}\implies(m\sqcup_1m^\prime)\sqsubseteq_1m^{\prime\prime}$
+  \end{enumerate}
+  \begin{proof}[Proof (i)]
+    The cases where $m,m^\prime$ are $\bot$ are omitted as trivial.\\
+    \noindent
+    Let $m,m^\prime\in\mathit{Zon}-\{\bot\}$
+    \begin{itemize}
+      \step $\forall1\leq i,j\leq n.$
+      \itemsep-.1em
+      \begin{itemize}
+        \itemindent1em
+        \itemsep-.1em
+        \step $\min(m_{ij},m_{i,n+1}+m_{n+1,i})$
+        \step[\leq] $\max(\min(m_{ij},m_{i,n+1}+m_{n+1,j}),~\min(m^\prime_{ij},m^\prime_{i,n+1}+m^\prime_{n+1,j}))$
+      \end{itemize}
+      \step[\wedge] $\forall1\leq i\leq n+1.$
+      \begin{itemize}
+        \itemindent1em
+        \itemsep-.1em
+        \step $m_{i,n+1}\leq\max(m_{i,n+1},m^\prime_{i,n+1})$
+        \step[\wedge] $m_{n+1,i}\leq\max(m_{n+1,i},m^\prime_{n+1,i})$
+      \end{itemize}
+      \itemsep.7em
+      \step[\imps] $m\sqsubseteq_1(m\sqcup_1m^\prime)$
+    \end{itemize}
+    And the proof of $m^\prime\sqsubseteq_1(m\sqcup_1m^\prime)$ is symmetric.\qedhere
+  \end{proof}
+
+  \begin{proof}[Proof (ii)]
+    Cases involving $\bot$ are omitted as trivial.\\
+    \noindent
+    Suppose $m,m^\prime,m^{\prime\prime}\in\mathit{Zon}-\{\bot\}$ such that $m\sqsubseteq_1 m^{\prime\prime}$ and $m^\prime\sqsubseteq m^{\prime\prime}$
+    \begin{itemize}
+      \step[\imps] $\forall1\leq i, j\leq n.~\min(m_{ij},m_{i,n+1}+m_{n+1,j})\leq m^{\prime\prime}_{ij}$
+      \marginnote{Definition of $\sqsubseteq_1$}
+      \itemsep-.1em
+      \step[\wedge] $\forall1\leq i\leq n+1.~m_{i,n+1}\leq m^{\prime\prime}_{i,n+1}\wedge m_{n+1,i}\leq m^{\prime\prime}_{n+1,i}$
+      \step[\wedge] $\forall1\leq i, j\leq n.~\min(m^\prime_{ij},m^\prime_{i,n+1}+m^\prime_{n+1,j})\leq m^{\prime\prime}_{ij}$
+      \step[\wedge] $\forall1\leq i\leq n+1.~m^\prime_{i,n+1}\leq m^{\prime\prime}_{i,n+1}\wedge m^\prime_{n+1,i}\leq m^{\prime\prime}_{n+1,i}$
+      \itemsep.7em
+      \step[\imps] $\forall1\leq i, j\leq n.$
+      \marginnote{Gathering like terms}
+      \begin{itemize}
+        \itemindent1em
+        \itemsep-.1em
+        \step $\min(m_{ij},m_{i,n+1}+m_{n+1,j})\leq m^{\prime\prime}_{ij}$
+        \step[\wedge] $\min(m^\prime_{ij},m^\prime_{i,n+1}+m^\prime_{n+1,j})\leq m^{\prime\prime}_{ij}$
+      \end{itemize}
+      \itemsep-.1em
+      \step[\wedge] $\forall1\leq i\leq n+1.$
+      \begin{itemize}
+        \itemindent1em
+        \itemsep-.1em
+        \step $m_{i,n+1}\leq m^{\prime\prime}_{i,n+1}\wedge m_{n+1,i}\leq m^{\prime\prime}_{n+1,i}$
+        \step[\wedge] $m^\prime_{i,n+1}\leq m^{\prime\prime}_{i,n+1}\wedge m^\prime_{n+1,i}\leq m^{\prime\prime}_{n+1,i}$
+      \end{itemize}
+      \itemsep.7em
+      \step[\imps] $\forall1\leq i, j\leq n. \max($
+      \marginnote{$\max$ is a join w.r.t. $\leq$}
+      \begin{itemize}
+        \itemindent1em
+        \itemsep-.1em
+        \step $\min(m_{ij},m_{i,n+1}+m_{n+1,j}),$
+        \step $\min(m^\prime_{ij},m^\prime_{i,n+1}+m^\prime_{n+1,j}))\leq m^{\prime\prime}_{ij}$
+      \end{itemize}
+      \itemsep-.1em
+      \step[\wedge] $\forall1\leq i\leq n+1.$
+      \begin{itemize}
+        \itemindent1em
+        \itemsep-.1em
+        \step $\max(m_{i,n+1},~m^\prime_{i,n+1})\leq m^{\prime\prime}_{i,n+1}$
+        \step[\wedge] $\max(m_{n+1,i},~m^\prime_{n+1,i})\leq m^{\prime\prime}_{n+1,i}$
+      \end{itemize}
+      \itemsep.7em
+      \step[\iffs] $m\sqcup_1m^\prime\sqsubseteq_1m^{\prime\prime}$\qedhere
+      \marginnote{Definition of $\sqcup_1$}
+    \end{itemize}
+  \end{proof}
+\end{prop}
