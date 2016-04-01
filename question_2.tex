@@ -71,7 +71,32 @@ Define $\alpha : P(C)\to P(D)$ and $\gamma : P(D)\to P(C)$ by:
   \end{proof}
 \end{prop}
 
-
 \subsection{Part (b)}\label{sec:q-2-b}
+Define $G : P(D)\to P(D)$
+\begin{align*}
+  G(D_0) = \{d_I\}\cup\{g(d) : d\in D_0\}
+\end{align*}
+\begin{prop}
+  $\beta$ surjective $\implies G = \alpha\compose F\compose\gamma$
+  \begin{proof}
+    let $D_0\subseteq D$
+    \begin{itemize}
+      \step $\alpha(F(\gamma(D_0)))$
+      \step[=] $\{\beta(c):c\in F(\gamma(D_0))\}$
+      \marginnote{Definition of $\alpha$}
+      \step[=] $\{\beta(c):c\in \{c_I\}\cup\{f(c):c\in\gamma(D_0)\}\}$
+      \marginnote{Definition of $F$}
+      \step[=] $\{\beta(c):c\in \{c_I\}\cup\{f(c):c\in\{c\in C:\beta(c)\in D_0\}\}\}$
+      \marginnote{Definition of $\gamma$}
+      \step[=] $\{\beta(c_I)\}\cup\{\beta(f(c)) : c\in C,\beta(c)\in D_0\}$
+      \step[=] $\{d_I\}\cup\{g(\beta(c)) : c\in C,\beta(c)\in D_0\}$
+      \marginnote{$\beta(c_I) = d_I$ and $\beta\compose f = g\compose\beta$}
+      \step[=] $\{d_I\}\cup\{g(d):d\in D_0\}$
+      \marginnote{$\beta$ surjective, by assumption}
+      \step[=] $G(D_0)$
+      \step[\imps] $G = \alpha\compose F\compose\gamma$\qedhere
+    \end{itemize}
+  \end{proof}
+\end{prop}
 
 \subsection{Part (c)}\label{sec:q-2-c}
