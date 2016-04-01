@@ -100,3 +100,132 @@ Define $G : P(D)\to P(D)$
 \end{prop}
 
 \subsection{Part (c)}\label{sec:q-2-c}
+
+Let $(D_k)_{k\geq0}$ be the sequence whose fixed-point is computed by our algorithm(s), defined by:
+\begin{align*}
+  D_0 & =\varnothing\\
+  D_{k+1} & = G(D_k) && \text{for }k\geq0
+\end{align*}
+
+In order to calculate the worst-case time complexity, we note that Corollary~\ref{cor:g-abs} (given below) implies that if $(D_k)_{k\geq0}$ has not terminated after $\abs{D} + 1$ steps, $\abs{D_{\abs{D}+1}} = \abs{D} + 1$, which is a contradiction as $D$ is finite and $D_{\abs{D}+1}\subseteq D\implies \abs{D_{\abs{D}+1}}\leq \abs{D}$.\\[1em]
+
+\noindent
+$\implies (D_k)_{k\geq0}$ terminates in at most $\abs{D}+1$ steps.\\[1em]
+
+As given in the question, every iteration of the algorithm takes, in the worst-case $O(\abs{D})$ time to run, so overall, this algorithm has a worst-case time complexity of $O(\abs{D}^2)$.\\[1em]
+
+Taking inspiration from Corollary~\ref{cor:g-seq}, we may formulate an alternative algorithm as follows:
+
+\begin{algorithm}
+  \caption{An improved algorithm for calculating the fixed-point of $G$.}\label{alg:fix-g}
+  \Begin{
+      $D\gets\varnothing$\;
+      $d\gets d_I$\;
+      \While {$d\notin D$} {
+        $D\gets D\cup\{d\}$\;
+        $d\gets g(d)$
+      }
+      return $d$\;
+    }
+\end{algorithm}
+
+As before, the outer-loop will take $\abs{D}+1$ iterations to terminate in the worst-case, but, the loop body now involves only a membership query, and an insertion, each taking $O(\log\abs{D})$ time in the worst-case, followed by the application of $g$ which we assume to be of unit cost.\\[1em]
+
+\noindent
+$\implies$ The worst-case time complexity of Algorithm~\ref{alg:fix-g} is $O(\abs{D}\log\abs{D})$.
+
+\begin{prop}[Maintenance]
+  At the beginning of iteration $i$, ${d = g^i(d_I)}$ and ${D = D_i}$.\\[1em]
+
+  \noindent
+  Proof by Induction
+  \begin{proof}[Base Case $i = 0$]
+    \begin{align*}
+      D &= \varnothing = D_0\\
+      d &= d_I = g^0(d_I)\tag*{\qedhere}
+    \end{align*}
+  \end{proof}
+  \begin{proof}[Inductive Step $i = k + 1$]~\\
+    \begin{itemize}
+      \step At the beginning of iteration $k$, $D = D_k$, $d = g^k(d_I)$
+      \marginnote{Induction Hypothesis}
+      \step $d\notin D$ At the beginning of iteration $k$
+      \marginnote{By assumption, we have reached the beginning of the $k+1^{\text{th}}$ iteration.}
+      \step[\imps] $g^k(d_I)\notin D_k$
+      \step[\imps] During the $k^{\text{th}}$ iteration\\
+      \begin{align*}
+        D & \gets D\cup\{d\}\\
+        d & \gets g(d)
+      \end{align*}
+      \step[\iffs]
+      \begin{align*}
+        D & \gets D_k\cup\{g^k(d_I)\} && = D_{k+1}
+        \mathnote{Corollary~\ref{cor:g-seq}}
+        \\ d & \gets g(g^k(d_I)) && = g^{k+1}(d_I)
+        \tag*{\qedhere}
+      \end{align*}
+    \end{itemize}
+  \end{proof}
+\end{prop}
+
+\begin{prop}[Termination]
+  Algorithm~\ref{alg:fix-g} computes the least fixed-point of $G$.
+  \begin{proof}
+    Let $k_0\in\mathbb{N}$ be the smallest number such that $D_{k_0} = D_{k_0+1}$.
+    \begin{itemize}
+      \step[\imps] $g^{k_0}(d_I)\in D_{k_0}$
+      \marginnote{Corollary~\ref{cor:g-seq}}
+      \step[\imps] At iteration $k_0$ the loop condition of Algorithm~\ref{alg:fix-g} will fail
+      \marginnote{By the correctness of maintenance.}
+      \step[\imps] Algorithm~\ref{alg:fix-g} will return $D_{k_0}$\qedhere
+    \end{itemize}
+  \end{proof}
+\end{prop}
+
+\begin{lemma}\label{lemma:g-seq}
+  $D_i = \{g^0(d_I),g^1(d_I),\ldots,g^{i-1}(d_I)\}$
+  \noindent
+  Proof by induction on $i$
+  \begin{proof}[Base Case $i = 0$]
+    $D_0 = \varnothing$\qedhere
+  \end{proof}
+  \begin{proof}[Inductive step $i = k + 1$]
+    \begin{align*}
+      D_{k+1} & = G(D_k)
+      \mathnote{Definition of $D_i$}
+      \\ & = G(\{d_I, g(d_I), g^2(d_I),\ldots,g^{k-1}(d_I)\})
+      \mathnote{Induction Hypothesis}
+      \\ & = \{d_I\}\cup\{g(d_I),g^2(d_I),g^3(d_I),\ldots,g^k(d_I)\}
+      \mathnote{definition of $G$}
+    \end{align*}\qedhere
+  \end{proof}
+\end{lemma}
+
+\begin{corollary}\label{cor:g-seq}
+  $D_{k+1} = D_k\cup\{g^k(d_I)\}$ follows by rearranging Lemma~\ref{lemma:g-seq}'s conclusion.
+\end{corollary}
+
+\begin{corollary}\label{cor:g-abs}
+  If $(D_k)_{k\geq0}$ does not terminate in the first $k$ steps, then $\abs{D_k} = k$.
+  \noindent
+  Proof by Induction on $k$
+  \begin{proof}[Base Case $k = 0$]
+    $\abs{D_0} = 0$\qedhere
+  \end{proof}
+  \begin{proof}[Inductive Step $k = i + 1$]
+    Suppose $(D_k)_{k\geq0}$ does not terminate in the first $i+1$ steps. Then it follows that:
+    \begin{enumerate}[(i)]
+      \item $D_{i+1}\neq D_i$
+      \item $(D_k)_{k\geq0}$ did not terminate in the first $i$ steps.
+    \end{enumerate}
+    From which we can infer:
+    \begin{align*}
+      \abs{D_{i+1}} & = \abs{D_i\cup\{g^i(d_I)\}}
+      \mathnote{Corollary~\ref{cor:g-seq}}
+      \\ & = \abs{D_i} + 1
+      \mathnote{By (i), $g^i(d_I)\notin D_i$}
+      \\ & = i + 1
+      \mathnote{By (ii), and the induction hypothesis}
+    \end{align*}\qedhere
+  \end{proof}
+\end{corollary}
