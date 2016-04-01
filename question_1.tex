@@ -1,7 +1,308 @@
 \subsection{Part (a)}\label{sec:q-1-a}
 
+Suppose we have two variables, $\mathit{Var}= \{x_1, x_2\}$. Consider
+
+\begin{enumerate}[-]\itemsep0em
+\item $(m_n)_{n\geq0}\in\mathit{Zon}^\omega$, a sequence, and,
+\item $(w_n)_{n\geq0}$, its widenings according to $\Widen_1$.
+\end{enumerate}
+
+\noindent
+Defined respectively according to:
+
+\begin{align*}
+  m_{2i} & =
+  \begin{bmatrix}
+    0 & 1 & \infty \\
+    1 & 0 & 1 \\
+    1 & 1 & 0
+  \end{bmatrix}
+  && \text{ and } &
+  m_{2i+1} & =
+  \begin{bmatrix}
+    0 & \infty & 1 \\
+    1 & 0 & 1 \\
+    1 & 1 & 0
+  \end{bmatrix}
+  && \text{ for } i\geq0\\
+  w_0 & = m_0
+  && \text{ and } &
+  w_{i+1} & = w_i^\ast\Widen m_{i+1}
+  && \text{ for } i\geq0
+\end{align*}
+
+\begin{prop}\label{prop:widen-1}
+  \begin{align*}
+    w_i =
+    \begin{bmatrix}
+      0 & i + 1 & \infty\\
+      1 & 0 & 1\\
+      1 & 1 & 0
+    \end{bmatrix}
+    \text{ if } i \text{ is even and }
+    \begin{bmatrix}
+      0 & \infty & i + 1 \\
+      1 & 0 & 1\\
+      1 & 1 & 0
+    \end{bmatrix}
+    \text{ if } i \text{ is odd}
+  \end{align*}
+
+  \noindent
+  Proof by induction on $i$.
+
+  \begin{proof}[Base Case, $i = 0$]
+    \begin{align*}
+      w_0 = m_0 =
+      \begin{bmatrix}
+        0 & 1 & \infty \\
+        1 & 0 & 1 \\
+        1 & 1 & 0
+      \end{bmatrix}
+      \tag*{\qedhere}
+    \end{align*}
+  \end{proof}
+
+  \begin{proof}[Inductive step $i = 2k$, $k > 0$]
+    \begin{align*}
+      w_{2k} &= w_{2k-1}^\ast\Widen m_{2k}
+      \\ &= w_{2(k-1)+1}^\ast\Widen m_{2k}
+      \\ &=
+      \begin{bmatrix}
+        0 & \infty & 2k \\
+        1 & 0 & 1 \\
+        1 & 1 & 0
+      \end{bmatrix}^\ast
+      \Widen
+      \begin{bmatrix}
+        0 & 1 & \infty \\
+        1 & 0 & 1 \\
+        1 & 1 & 0
+      \end{bmatrix}
+      \mathnote{Induction Hypothesis and definition of $m$ (at even indices).}
+      \\ &=
+      \begin{bmatrix}
+        0 & 2k+1 & 2k \\
+        1 & 0 & 1 \\
+        1 & 1 & 0
+      \end{bmatrix}^\ast
+      \Widen
+      \begin{bmatrix}
+        0 & 1 & \infty \\
+        1 & 0 & 1 \\
+        1 & 1 & 0
+      \end{bmatrix}
+      \mathnote{Definition of closure}
+      \\ &=
+      \begin{bmatrix}
+        0 & 2k+1 & \infty \\
+        1 & 0 & 1 \\
+        1 & 1 & 0
+      \end{bmatrix}
+      \mathnote{Definition of widening\qedhere}
+    \end{align*}
+  \end{proof}
+
+  \begin{proof}[Inductive step $i = 2k+1$, $k \geq 0$]
+    \begin{align*}
+      w_{2k+1} &= w_{2k}^\ast\Widen m_{2k+1}
+      \\ &=
+      \begin{bmatrix}
+        0 & 2k+1 & \infty \\
+        1 & 0 & 1 \\
+        1 & 1 & 0
+      \end{bmatrix}^\ast
+      \Widen
+      \begin{bmatrix}
+        0 & 1 & \infty \\
+        1 & 0 & 1 \\
+        1 & 1 & 0
+      \end{bmatrix}
+      \mathnote{Induction Hypothesis and definition of $m$ (at odd indices).}
+      \\ &=
+      \begin{bmatrix}
+        0 & 2k+1 & 2k+2 \\
+        1 & 0 & 1 \\
+        1 & 1 & 0
+      \end{bmatrix}^\ast
+      \Widen
+      \begin{bmatrix}
+        0 & 1 & \infty \\
+        1 & 0 & 1 \\
+        1 & 1 & 0
+      \end{bmatrix}
+      \mathnote{Definition of closure}
+      \\ &=
+      \begin{bmatrix}
+        0 & \infty & 2k+2 \\
+        1 & 0 & 1 \\
+        1 & 1 & 0
+      \end{bmatrix}
+      \mathnote{Definition of widening\qedhere}
+    \end{align*}
+  \end{proof}
+\end{prop}
+
+\noindent
+It follows as a Corollary to Proposition~\ref{prop:widen-1}, that $\forall k\in\mathbb{N}.~w_k\neq w_{k+1}$.
+
 \subsection{Part (b.i)}\label{sec:q-1-b-i}
+\begin{prop}\label{prop:narrow-lb}
+  $\forall m,m^\prime\in\mathit{Zon}.~\gamma_z(m)\cap\gamma_z(m^\prime)~\subseteq~\gamma_z(m\Narrow_1 m^\prime)~\subseteq~\gamma_z(m)$
+  \begin{proof}
+    Let $m,m^\prime\in\mathit{Zon}$.
+    \begin{itemize}\itemsep1em
+      \step $m^\ast\sqcap m~\sqsubseteq~m^\ast\Narrow m^\prime~\sqsubseteq~m^\ast$
+      \marginnote{$\Narrow$ is a narrowing operator}
+      \step[\iffs] $\alpha_z(\gamma_z(m))\sqcap m^\prime~\sqsubseteq~m^\ast\Narrow m^\prime~\sqsubseteq~\alpha_z(\gamma_z(m))$
+      \marginnote{Definition of closure}
+      \step[\imps] $\gamma_z(\alpha_z(\gamma_z(m))\sqcap m^\prime)~\subseteq~\gamma_z(m^\ast\Narrow m^\prime)~\subseteq~\gamma_z(\alpha_z(\gamma_z(m)))$
+      \marginnote{$\gamma_z$ is monotonic}
+      \step[\imps] $\gamma_z(\alpha_z(\gamma_z(m)))\cap\gamma_z(m^\prime)~\subseteq~\gamma_z(m^\ast\Narrow m^\prime)~\subseteq~\gamma_z(\alpha_z(\gamma_z(m)))$
+      \marginnote{$\gamma_z$ preserves meets}
+      \step[\iffs] $\gamma_z(m)\cap\gamma_z(m^\prime)~\subseteq~\gamma_z(m^\ast\Narrow m^\prime)~\subseteq~\gamma_z(m)$
+      \marginnote{$\gamma_z = \gamma_z\compose\alpha_z\compose\gamma_z$ from problem sheet 1, q2b}
+      \step[\iffs] $\gamma_z(m)\cap\gamma_z(m^\prime)~\subseteq~\gamma_z(m\Narrow_1m^\prime)~\subseteq~\gamma_z(m)$
+      \marginnote{Definition of $\Narrow_1$\qedhere}
+    \end{itemize}
+  \end{proof}
+\end{prop}
 
 \subsection{Part (b.ii)}\label{sec:q-1-b-ii}
+
+The main proof of this result relies on the definition of a function $\Infty : \mathit{Zon}\to\mathbb{N}$,
+
+\begin{align*}
+  \\ \Infty(m) & = \sum_{i,j = 1}^{n+1}\mathbb{1}[m_{ij} = \infty]
+  \\ \Infty(\bot) & = 0
+\end{align*}
+
+And some lemmas relating to how it interacts with narrowing and closure, which may be found after the proof itself.
+
+\begin{prop}
+  For any $(m_k)_{k\geq0}\in\mathit{Zon}^\omega$, let $(v_k)_{k\geq0}$ be the narrowed sequence according to $\Narrow_1$, such that:
+  \begin{align*}
+    v_0 & = m_0
+    \\ v_{k+1} & = v_k^\ast\Narrow m_{k+1} && \text{for } k\geq0
+  \end{align*}
+  Then, there exists some $k_0\in\mathbb{N}$ such that $v_{k_0} = v_{k_0+1}$.
+
+  \begin{proof}
+    Consider any contiguous triple of elements in $(v_k)_{k\geq0}$; $v_i,v_{i+1},v_{i+2}$, such that:
+    \begin{align*}
+      v_i\neq(v_{i+1} = v_i^\ast\Narrow m_{i+1})\neq(v_{i+2} = v_{i+1}^\ast\Narrow m_{i+2})
+    \end{align*}
+    Observe that:
+    \begin{align*}
+      \Infty(v_{i+2})
+      \overset{\text{(1)}}\leq\Infty(v_{i+1}^\ast)
+      \overset{\text{(2)}}\leq\Infty(v_{i+1})
+      \overset{\text{(1)}}\leq\Infty(v_i^\ast)
+      \overset{\text{(2)}}\leq\Infty(v_i)
+    \end{align*}
+    Where
+    \begin{enumerate}[(1)]
+      \item follows by Corollary~\ref{cor:infty-narrow}
+      \item follows by Lemma~\ref{lemma:infty-closure}
+    \end{enumerate}
+
+    Then we may show that for any such triple, at least one of the inequalities is strict (we proceed by cases)
+
+    \begin{proof}[Case 1]
+      Suppose $\Infty(v_{i+1}) < \Infty(v_i)$
+      \begin{itemize}
+        \step[\imps] Our conclusion trivially follows from the assumption.\qedhere
+      \end{itemize}
+    \end{proof}
+    \begin{proof}[Case 2]
+      Suppose $\Infty(v_{i+1}) = \Infty(v_i)$.
+      \begin{itemize}
+        \step[\iffs] $\Infty(v_i^\ast\Narrow m_{i+1}) = \Infty(v_i)$
+        \marginnote{Definition of $v_{i+1}$}
+        \step[\iffs] $\Infty(v_i^\ast\Narrow m_{i+1}) \geq \Infty(v_i^\ast)$
+        \marginnote{Lemma~\ref{lemma:infty-closure}}
+        \step[\wedge] $\Infty(v_i^\ast\Narrow m_{i+1})\leq\Infty(v_i^\ast)$
+        \marginnote{Corollary~\ref{cor:infty-narrow}}
+        \step[\imps] $\Infty(v_i^\ast\Narrow m_{i+1}) = \Infty(v_i^\ast)$
+        \marginnote{Antisymmetry of $\leq$ }
+        \step[\imps] $v_i^\ast\Narrow m_{i+1} = v_i^\ast$
+        \marginnote{Lemma~\ref{lemma:infty-narrow} (negated)}
+        \step[\iffs] $v_{i+1} = v_i^\ast$
+      \end{itemize}
+      Taking this result and substituting into the definition of $v_{i+2}$:
+      \begin{align*}
+        v_{i+2} & = v_{i+1}^\ast\Narrow m_{i+2}
+        \\ & = v_i^{\ast\ast}\Narrow m_{i+2}
+        \\ & = v_i^\ast\Narrow m_{i+2}
+        \mathnote{Lemma~\ref{lemma:closure-idemp}}
+        \\ & \neq v_{i+1}
+        \mathnote{By assumption}
+        \\ & = v_i^\ast
+      \end{align*}
+      \begin{itemize}
+        \step[\imps] $\Infty(v_i^\ast\Narrow m_{i+2}) < \Infty(v_i^\ast)$
+        \marginnote{Lemma~\ref{lemma:infty-narrow}}
+        \step[\iffs] $\Infty(v_{i+2}) < \Infty(v_{i+1})$\qedhere
+        \marginnote{Definitions of $v_{i+2}$ and $v_{i+1}$}
+      \end{itemize}
+    \end{proof}
+
+    Given that
+    \begin{enumerate}[(1)]
+      \item $\forall m\in\mathit{Zon}.~0\leq\Infty(m)\leq(n+1)^2$
+      \item By the above reasoning, at least every other element in any subsequence of $(v_k)_{k\geq0}$ has strictly fewer $\infty$'s than its predecessor.
+    \end{enumerate}
+    \begin{itemize}
+      \step There are $O(n^2)$ contiguous elements in a non-terminating subsequence of $(v_k)_{k\geq0}$.
+      \step[\imps] $(v_k)_{k\geq0}$ terminates in $O(n^2)$ steps.\qedhere
+    \end{itemize}
+  \end{proof}
+\end{prop}
+
+\begin{lemma}\label{lemma:infty-narrow}
+  $\forall m,m^\prime\in\mathit{Zon}.~\Infty(m\Narrow m^\prime)<\Infty(m)\iff m\neq m\Narrow m^\prime$
+  \begin{proof}[Proof $\Rightarrow$]
+    This direction is trivial. If the number of infinities in two matrices are different, they cannot be equal.\qedhere
+  \end{proof}
+
+  \begin{proof}[Proof $\Leftarrow$]
+    Suppose $m\neq m\Narrow m^\prime$. By the definition of $\Narrow$, we can make the following observations:
+    \begin{enumerate}[(i)]
+      \item $\forall1\leq i,j\leq n+1.~(m\Narrow m^\prime)_{ij}=\infty\implies m_{ij} = \infty$\\
+        As $(\text{---}\Narrow m^\prime)$ does not introduce new $\infty$ elements.
+      \item $\exists1\leq i,j\leq n+1.~m_{ij}=\infty\wedge(m\Narrow m^\prime)_{ij}\neq\infty$\\
+        As $(\text{---}\Narrow m^\prime)$ changed $m$.
+    \end{enumerate}
+    From these observations, it follows that $\Infty(m\Narrow m^\prime)<\Infty(m)$.\qedhere
+  \end{proof}
+\end{lemma}
+
+\begin{corollary}\label{cor:infty-narrow}
+  $\forall m^\prime\in\mathit{Zon}.~\Infty\compose(\text{---}\Narrow m^\prime)\leq\Infty$
+  \begin{proof}
+    Follows from Lemma~\ref{lemma:infty-narrow}\qedhere.
+  \end{proof}
+\end{corollary}
+
+\begin{lemma}\label{lemma:infty-closure}
+  $\Infty\compose\alpha_z\compose\gamma_z\leq\Infty$
+  \begin{proof}[Proof by contradiction]
+    Suppose for a contradiction ${\exists m\in\mathit{Zon}.~\Infty(\alpha_z(\gamma_z(m))) > \Infty(m)}$
+  \end{proof}
+\end{lemma}
+
+\begin{lemma}\label{lemma:closure-idemp}
+  Closure is idempotent, that is to say
+  ${(\alpha\compose\gamma)\compose(\alpha\compose\gamma) = \alpha\compose\gamma}$
+  \begin{proof}~\\
+    \begin{itemize}
+      \step $(\alpha\compose\gamma)\compose(\alpha\compose\gamma)$
+      \step[=] $\alpha\compose(\gamma\compose\alpha\compose\gamma)$
+      \marginnote{Associativity of $\compose$}
+      \step[=] $\alpha\compose\gamma$\qedhere
+      \marginnote{$\gamma = \gamma\compose\alpha\compose\gamma$ from sheet 1 q2b.}
+    \end{itemize}
+  \end{proof}
+\end{lemma}
 
 \subsection{Part (c)}\label{sec:q-1-c}
