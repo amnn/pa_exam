@@ -1,4 +1,76 @@
 \subsection{Part (a)}\label{sec:q-2-a}
+Define $\alpha : P(C)\to P(D)$ and $\gamma : P(D)\to P(C)$ by:
+\begin{align*}
+  \alpha(C_0) & = \{\beta(c) : c\in C_0\} \\
+  \gamma(D_0) & = \{c\in C : \beta(c)\in D_0\}
+\end{align*}
+
+\begin{prop}
+  $\alpha : P(C)\rightleftarrows P(D) : \gamma$ forms a Galois Connection\\
+  It suffices to show that
+  \begin{enumerate}[(i)]
+    \item $\alpha$ is monotone
+    \item $\gamma$ is monotone
+    \item $\forall C_0\subseteq C,D_0\subseteq D.~\alpha(C_0)\subseteq D\iff C_0\subseteq\gamma(D_0)$
+  \end{enumerate}
+  \begin{proof}[Proof (i)]
+    Let $C_0\subseteq C_0^\prime\subseteq C$
+    \begin{itemize}
+      \step Suppose $d\in\alpha(C_0)$
+      \step[\imps] $d = \beta(c)$ for some $c\in C_0$
+      \marginnote{Definition of $\alpha$}
+      \step[\imps] $d = \beta(c)$ for some $c\in C_0^\prime$
+      \marginnote{$C_0\subseteq C_0^\prime$}
+      \step[\imps] $d\in\alpha(C_0^\prime)$
+      \marginnote{Definition of $\alpha$}
+      \step[\imps] $\alpha(C_0)\subseteq\alpha(C_0^\prime)$\qedhere
+    \end{itemize}
+  \end{proof}
+  \begin{proof}[Proof (ii)]
+    Let $D_0\subseteq D_0^\prime\subseteq D$
+    \begin{itemize}
+      \step Suppose $c\in\gamma(D_0)$
+      \step[\imps] $\beta(c) \in D_0$
+      \marginnote{Definition of $\gamma$}
+      \step[\imps] $\beta(c) \in D_0^\prime$
+      \marginnote{$D_0\subseteq D_0^\prime$}
+      \step[\imps] $c\in\gamma(D_0^\prime)$
+      \marginnote{Definition of $\gamma$}
+      \step[\imps] $\gamma(D_0)\subseteq\gamma(D_0^\prime)$\qedhere
+    \end{itemize}
+  \end{proof}
+  \begin{proof}[Proof (iii) $\Rightarrow$]
+    Let $C_0\subseteq C, D_0\subseteq D$ such that $\alpha(C_0)\subseteq D_0$
+    \begin{itemize}
+      \step[\imps] $\{\beta(c) : c\in C_0\}\subseteq D_0$
+      \marginnote{Definition of $\alpha$}
+      \step[\imps] $\forall c\in C_0.~\beta(c)\in D_0$
+      \marginnote{($\star$)}
+      \step let $c\in C_0$
+      \step[\imps] $\beta(c)\in D_0$
+      \marginnote{by $\star$}
+      \step[\imps] $c\in\gamma(D_0)$
+      \marginnote{Definition of $\gamma$}
+      \step[\imps]$C_0\subseteq\gamma(D_0)$\qedhere
+    \end{itemize}
+  \end{proof}
+  \begin{proof}[Proof (iii) $\Leftarrow$]
+    Let $C_0\subseteq C, D_0\subseteq D$ such that $C_0\subseteq\gamma(D_0)$
+    \begin{itemize}
+      \step[\imps] $C_0\subseteq\{c\in C : \beta(c)\in D_0\}$
+      \marginnote{Definition of $\gamma$}
+      \step[\imps] $\forall c\in C_0.~\beta(c)\in D_0$
+      \marginnote{($\star$)}
+      \step let $d\in \alpha(C_0)$
+      \step[\imps] $d = \beta(c)$ for some $c\in C_0$
+      \marginnote{Definition of $\alpha$}
+      \step[\imps] $d\in D_0$
+      \marginnote{by $\star$}
+      \step[\imps]$\alpha(C_0)\subseteq D_0$\qedhere
+    \end{itemize}
+  \end{proof}
+\end{prop}
+
 
 \subsection{Part (b)}\label{sec:q-2-b}
 
