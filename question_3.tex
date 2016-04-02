@@ -94,11 +94,11 @@ Then we may define our Galois Connection $\alpha : P(\mathit{Dist})\rightleftarr
 \end{algorithm}
 
 Consider Algorithm~\ref{alg:close-ra}, in order to prove its correctness, it suffices to equate the function it calculates with $\alpha\compose\gamma$, that is to say:
-\begin{prop}
+\begin{prop}[Correctness]\label{prop:close-correct}
   \begin{align*}
     \alpha(\gamma(a)) & =
     \begin{cases}
-      \lambda z_i\ldotp\bot & \exists z_j\in\mathit{Var}\ldotp~a(z_j) = \bot\\
+      \lambda z_i\ldotp\bot & \text{if }\exists z_j\in\mathit{Var}\ldotp~a(z_j) = \bot\\
       a & \text{otherwise}
     \end{cases}
   \end{align*}
@@ -141,7 +141,7 @@ Consider Algorithm~\ref{alg:close-ra}, in order to prove its correctness, it suf
           \end{flalign*}
 
         \end{itemize}
-        \step Lemma~\ref{lem:dist-feasible} states that for any mapping of variables to probabilities, it is possible to find a distribution over states that achieves that mapping.
+        \step Lemma~\ref{lemma:dist-feasible} states that for any mapping of variables to probabilities, it is possible to find a distribution over states that achieves that mapping.
         \step[\imps] $\exists d\in\mathit{Dist}\ldotp\forall z_i\in\mathit{Var}\ldotp~p_i(d) = l_i$
         \itemsep-.1em
         \step[\wedge] $\exists d\in\mathit{Dist}\ldotp\forall z_i\in\mathit{Var}\ldotp~p_i(d) = u_i$
@@ -166,7 +166,7 @@ Consider Algorithm~\ref{alg:close-ra}, in order to prove its correctness, it suf
     \end{align*}
     There are $2^n$ variables (in the system) --- corresponding to subsets of $\mathit{Var}$ --- and $n + 1$ constraints (one for each $z_i\in\mathit{Var}$, and an additional one to ensure that $d$ is a distribution)\\[1em]
 
-    This can be interpreted in matrix form as $Sd = p$, where ${S\in\mathbb{B}^{(n+1)\times2^n}}$, ${d\in[0,1]^{2^n}}$, and ${p\in[0,1]^{n+1}}$. In this form, each row of $S$ is linearly independent, by their construction from the above constraints. Furthermore, as $\forall n\geq 0\ldotp~2^n\geq n+1$ there are always at least as many variables as constraints.\\[1em]
+    In matrix form this is $Sd = p$, where ${S\in\mathbb{B}^{(n+1)\times2^n}}$, ${d\in[0,1]^{2^n}}$, and ${p\in[0,1]^{n+1}}$. In this form, each row of $S$ is linearly independent, by their construction from the above constraints. Furthermore, as $\forall n\geq 0\ldotp~2^n\geq n+1$ there are always at least as many variables as constraints.\\[1em]
 
     \noindent
     $\implies$ $S$ has full rank.\\[1em]
@@ -180,3 +180,110 @@ Consider Algorithm~\ref{alg:close-ra}, in order to prove its correctness, it suf
 \end{lemma}
 
 \subsection{Part (c)}\label{sec:q-3-c}
+
+\begin{algorithm}
+  \SetKwInOut{Input}{input}
+  \SetKwInOut{Output}{output}
+  \SetKwFunction{Closure}{Closure}
+  \Input{$a\in\mathit{RA}$}
+  \Output{$\alpha(\sembrack{z_1 = \operatorname{flip}(0.7)}^\flat(\gamma(a)))$}
+  \Begin{
+      $a^\prime\gets$ \Closure{$a$}\;
+      \uIf{$a^\prime(z_1) = \bot$} {
+        return $a^\prime$\;
+      } \Else{
+        \tcc{$\oplus$ is a map overwrite/update operation.}
+        return $a^\prime\oplus(z_1\mapsto[0.7,0.7])$\;
+      }
+    }
+  \caption{Best abstraction for $\sembrack{z_1 = \operatorname{flip}(0.7)}^\flat$}\label{alg:flip}
+\end{algorithm}
+
+In order to prove correctness, we show that the function computed by Algorithm~\ref{alg:flip} coincides with the best abstraction.
+
+\begin{prop}[Correctness]
+  \begin{align*}
+    \alpha(\sembrack{z_1 = \operatorname{flip}(0.7)}^\flat(\gamma(a))) & =
+    \begin{cases}
+      \lambda z_i\ldotp\bot & \text{if }\exists z_j\in\mathit{Var}\ldotp~a(z_j)=\bot\\
+      a[z_1\mapsto[0.7,0.7]] & \text{otherwise}
+    \end{cases}
+  \end{align*}
+  \begin{proof}
+    Let $a\in\mathit{RA}$
+    \begin{itemize}
+      \step $\alpha(\sembrack{z_1 = \operatorname{flip}(0.7)}^\flat(\gamma(a)))$
+      \step[=] $\lambda z_i\ldotp\alpha_0(Q_i)$ where
+      \marginnote{Definition of $\alpha$}
+      \begin{flalign*}
+        \makebox[1em]{}
+        Q_i & = \{p_i(d) : d\in\sembrack{z_1=\operatorname{flip}(0.7)}^\flat(\gamma(a))\} &&
+        \\ & = \{p_i(f(d)) : d\in\gamma(a)\}&&
+        \mathnote{Definition of $\sembrack{z_1=\operatorname{flip}(0.7)}^\flat$}
+        \\ & = \{p_i(f(d)) : d\in\mathit{Dist},\forall z_j\in\mathit{Var}\ldotp~p_j(d)\in\gamma_0(a(z_j))\}
+        \mathnote{Definition of $\gamma$}
+      \end{flalign*}
+    \end{itemize}
+
+    \begin{proof}[Case 1, $\exists z_k\in\mathit{Var}\ldotp~a(z_k)=\bot$]~\\[1em]
+        By a similar argument to Case 1 in Proposition~\ref{prop:close-correct}, (Correctness of the Closure algorithm):
+      \begin{flalign*}
+        \makebox[2.2em]{}
+        Q_i & = \varnothing &&
+      \end{flalign*}
+      \begin{itemize}
+        \step[\imps] $\alpha(\sembrack{z_1 = \operatorname{flip}(0.7)}^\flat(\gamma(a))) = \lambda z_i\ldotp\alpha_0(\varnothing)$
+        \step[\iffs] $\alpha(\sembrack{z_1 = \operatorname{flip}(0.7)}^\flat(\gamma(a))) = \lambda z_i\ldotp\bot$\qedhere
+      \end{itemize}
+    \end{proof}
+
+    \begin{proof}[Case 2, ${\forall z_k\in\mathit{Var}\ldotp\exists l_k,u_k\in[0,1]\ldotp~l_k\leq u_k\wedge a(z_k)=[l_k,u_k]}$]
+      \begin{flalign*}
+        \makebox[2.2em]{}
+        Q_i & = & \{ & p_i(f(d)) : d\in\mathit{Dist},~\forall z_j\in\mathit{Var}\ldotp~k_j\leq p_j(d)\leq u_j\}
+        \\ & = & \{ & \sum_{\substack{s\in\mathit{St}\\s(z_i)=\mathit{true}}}f(d)(s) : d\in\mathit{Dist},~\forall z_j\in\mathit{Var}\ldotp~l_j\leq p_j(d)\leq u_j\}
+        \mathnote{Definition of $p_i$}
+        \\ & = & \{ & \sum_{\substack{s\in\mathit{St}\\s(z_i)=\mathit{true}\\s(z_1)=\mathit{true}}}0.7(d(s[z_1\mapsto\mathit{true}])+d(s[z_1\mapsto\mathit{false}])) &&
+        \mathnote{Definition of $f$}
+        \\ & & & \sum_{\substack{s\in\mathit{St}\\s(z_i)=\mathit{true}\\s(z_1)=\mathit{false}}}0.3(d(s[z_1\mapsto\mathit{true}])+d(s[z_1\mapsto\mathit{false}])) &&
+        \\ && : &~d\in\mathit{Dist},~\forall z_j\in\mathit{Var}\ldotp~l_j\leq p_j(d)\leq u_j\} &&
+        \\ & = & \{ & 0.7\sum_{\substack{s\in\mathit{St}\\s(z_i)=\mathit{true}\\s(z_1)=\mathit{true}}}d(s[z_1\mapsto\mathit{true}]) + 0.7\sum_{\substack{s\in\mathit{St}\\s(z_i)=\mathit{true}\\s(z_1)=\mathit{true}}}d(s[z_1\mapsto\mathit{false}]) &&
+        \\ & & & 0.3\sum_{\substack{s\in\mathit{St}\\s(z_i)=\mathit{true}\\s(z_1)=\mathit{false}}}d(s[z_1\mapsto\mathit{true}]) + 0.3\sum_{\substack{s\in\mathit{St}\\s(z_i)=\mathit{true}\\s(z_1)=\mathit{false}}} d(s[z_1\mapsto\mathit{false}]) &&
+        \\ && : &~d\in\mathit{Dist},~\forall z_j\in\mathit{Var}\ldotp~l_j\leq p_j(d)\leq u_j\} &&
+        \intertext{$\iff$}
+        \\ Q_1 & = & \{ & 0.7\sum_{\substack{s\in\mathit{St}\\s(z_1)=\mathit{true}}}d(s) + 0.7\sum_{\substack{s\in\mathit{St}\\s(z_1)=\mathit{true}}}d(s) &&
+        \mathnote{Removing summations over empty ranges, and redundant transformations on $s$.}
+        \\ && : &~d\in\mathit{Dist},~\forall z_j\in\mathit{Var}\ldotp~l_j\leq p_j(d)\leq u_j\} &&
+        \\  & = & \{ & 0.7p_1(d) + 0.7(1-p_1(d)) : d\in\mathit{Dist},~\forall z_j\in\mathit{Var}\ldotp~l_j\leq p_j(d)\leq u_j\}
+        \\  & = & \{ & 0.7 : d\in\mathit{Dist},~\forall z_j\in\mathit{Var}\ldotp~l_j\leq p_j(d)\leq u_j\}
+        \intertext{~}
+        \\ Q_{i\neq1} & = & \{ & 0.7\sum_{\substack{s\in\mathit{St}\\s(z_i)=\mathit{true}\\s(z_1)=\mathit{true}}}d(s) + 0.7\sum_{\substack{s\in\mathit{St}\\s(z_i)=\mathit{true}\\s(z_1)=\mathit{false}}}d(s) &&
+        \mathnote{Factorising transformations on $s$ into the ranges of summations.}
+        \\ & & & 0.3\sum_{\substack{s\in\mathit{St}\\s(z_i)=\mathit{true}\\s(z_1)=\mathit{true}}}d(s) + 0.3\sum_{\substack{s\in\mathit{St}\\s(z_i)=\mathit{true}\\s(z_1)=\mathit{false}}} d(s) &&
+        \\ && : &~d\in\mathit{Dist},~\forall z_j\in\mathit{Var}\ldotp~l_j\leq p_j(d)\leq u_j\} &&
+        \\ & = & \{ & \sum_{\substack{s\in\mathit{St}\\s(z_i)=\mathit{true}\\s(z_1)=\mathit{true}}}d(s) + \sum_{\substack{s\in\mathit{St}\\s(z_i)=\mathit{true}\\s(z_1)=\mathit{false}}}d(s) &&
+        \mathnote{Factorising common summations out.}
+        \\ && : &~d\in\mathit{Dist},~\forall z_j\in\mathit{Var}\ldotp~l_j\leq p_j(d)\leq u_j\} &&
+        \\ & = & \{ & \sum_{\substack{s\in\mathit{St}\\s(z_i)=\mathit{true}}}d(s) : d\in\mathit{Dist},~\forall z_j\in\mathit{Var}\ldotp~l_j\leq p_j(d)\leq u_j\} &&
+        \mathnote{Joining ranges of summations.}
+        \\ & = & \{ &~p_i(d) : d\in\mathit{Dist},~\forall z_j\in\mathit{Var}\ldotp~l_j\leq p_j(d)\leq u_j\} &&
+        \mathnote{Definition of $p_i$}
+      \end{flalign*}
+      \begin{itemize}
+        \step[\imps] $\inf(Q_1) = 0.7 = \sup(Q_1)$
+        \step[\wedge] $\inf(Q_{i\neq1}) = l_i$
+        \marginnote{By a similar argument to Case 2 of Proposition~\ref{prop:close-correct}, (Correctness of the Closure algorithm).}
+        \step[\wedge] $\sup(Q_{i\neq1}) = u_i$
+        \step[\imps]
+        \begin{align*}
+          \alpha(\sembrack{z_1=\operatorname{flip}(0.7)}^\flat(\gamma(a))) & =
+          \begin{cases}
+            \lambda z\ldotp\bot&\text{if }\exists z_i\in\mathit{Var}\ldotp~a(z_i)=\bot\\
+            a[z_1\mapsto[0.7,0.7]]&\text{otherwise}
+          \end{cases}
+          \tag*{\qedhere}
+        \end{align*}
+      \end{itemize}
+    \end{proof}
+  \end{proof}
+\end{prop}
