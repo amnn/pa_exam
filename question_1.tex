@@ -85,7 +85,7 @@ Defined respectively according to:
         0 & 2k+1 & 2k \\
         1 & 0 & 1 \\
         1 & 1 & 0
-      \end{bmatrix}^\ast
+      \end{bmatrix}
       \Widen
       \begin{bmatrix}
         0 & 1 & \infty \\
@@ -124,7 +124,7 @@ Defined respectively according to:
         0 & 2k+1 & 2k+2 \\
         1 & 0 & 1 \\
         1 & 1 & 0
-      \end{bmatrix}^\ast
+      \end{bmatrix}
       \Widen
       \begin{bmatrix}
         0 & 1 & \infty \\
@@ -228,18 +228,23 @@ And some lemmas relating to how it interacts with narrowing and closure, which m
         \step[\imps] $v_i^\ast\Narrow m_{i+1} = v_i^\ast$
         \marginnote{Lemma~\ref{lemma:infty-narrow} (negated)}
         \step[\iffs] $v_{i+1} = v_i^\ast$
+        \marginnote{Definition of $v_{i+1}$}
       \end{itemize}
-      Taking this result and substituting into the definition of $v_{i+2}$:
+      Taking this result (call it $\star$) and substituting into the definition of $v_{i+2}$:
       \begin{align*}
-        v_{i+2} & = v_{i+1}^\ast\Narrow m_{i+2}
+        v_i^\ast & = v_{i+1}
+        \mathnote{by $\star$}
+        \\ & \neq v_{i+2}
+        \mathnote{By assumption}
+        \\ & = v_{i+1}^\ast\Narrow m_{i+2}
+        \mathnote{Definition of $v_{i+2}$}
         \\ & = v_i^{\ast\ast}\Narrow m_{i+2}
+        \mathnote{by $\star$}
         \\ & = v_i^\ast\Narrow m_{i+2}
         \mathnote{Lemma~\ref{lemma:closure-idemp}}
-        \\ & \neq v_{i+1}
-        \mathnote{By assumption}
-        \\ & = v_i^\ast
       \end{align*}
       \begin{itemize}
+        \step[\iffs] $v_i^\ast \neq v_i^\ast\Narrow m_{i+2}$
         \step[\imps] $\Infty(v_i^\ast\Narrow m_{i+2}) < \Infty(v_i^\ast)$
         \marginnote{Lemma~\ref{lemma:infty-narrow}}
         \step[\iffs] $\Infty(v_{i+2}) < \Infty(v_{i+1})$\qedhere
