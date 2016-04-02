@@ -44,8 +44,7 @@ Define $\alpha : P(C)\to P(D)$ and $\gamma : P(D)\to P(C)$ by:
     \begin{itemize}
       \step[\imps] $\{\beta(c) : c\in C_0\}\subseteq D_0$
       \marginnote{Definition of $\alpha$}
-      \step[\imps] $\forall c\in C_0.~\beta(c)\in D_0$
-      \marginnote{($\star$)}
+      \step[\imps] $\forall c\in C_0.~\beta(c)\in D_0$\hfill($\star$)
       \step let $c\in C_0$
       \step[\imps] $\beta(c)\in D_0$
       \marginnote{by $\star$}
@@ -59,8 +58,7 @@ Define $\alpha : P(C)\to P(D)$ and $\gamma : P(D)\to P(C)$ by:
     \begin{itemize}
       \step[\imps] $C_0\subseteq\{c\in C : \beta(c)\in D_0\}$
       \marginnote{Definition of $\gamma$}
-      \step[\imps] $\forall c\in C_0.~\beta(c)\in D_0$
-      \marginnote{($\star$)}
+      \step[\imps] $\forall c\in C_0.~\beta(c)\in D_0$\hfill($\star$)
       \step let $d\in \alpha(C_0)$
       \step[\imps] $d = \beta(c)$ for some $c\in C_0$
       \marginnote{Definition of $\alpha$}
@@ -152,18 +150,18 @@ $\implies$ The worst-case time complexity of Algorithm~\ref{alg:fix-g} is $O(\ab
       \step $d\notin D$ At the beginning of iteration $k$
       \marginnote{By assumption, we have reached the beginning of the $k+1^{\text{th}}$ iteration.}
       \step[\imps] $g^k(d_I)\notin D_k$
-      \step[\imps] During the $k^{\text{th}}$ iteration\\
+      \step[\imps] During the $k^{\text{th}}$ iteration
       \begin{align*}
         D & \gets D\cup\{d\}\\
         d & \gets g(d)
       \end{align*}
       \step[\iffs]
-      \begin{align*}
+      \begin{alignat*}{3}
         D & \gets D_k\cup\{g^k(d_I)\} && = D_{k+1}
         \mathnote{Corollary~\ref{cor:g-seq}}
         \\ d & \gets g(g^k(d_I)) && = g^{k+1}(d_I)
         \tag*{\qedhere}
-      \end{align*}
+      \end{alignat*}
     \end{itemize}
   \end{proof}
 \end{prop}
@@ -183,7 +181,7 @@ $\implies$ The worst-case time complexity of Algorithm~\ref{alg:fix-g} is $O(\ab
 \end{prop}
 
 \begin{lemma}\label{lemma:g-seq}
-  $D_i = \{g^0(d_I),g^1(d_I),\ldots,g^{i-1}(d_I)\}$
+  $D_i = \{g^0(d_I),g^1(d_I),\ldots,g^{i-1}(d_I)\}$\\[1em]
   \noindent
   Proof by induction on $i$
   \begin{proof}[Base Case $i = 0$]
