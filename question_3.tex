@@ -1,5 +1,81 @@
 \subsection{Part (a)}\label{sec:q-3-a}
 
+Let $p_i : \mathit{Dist}\to[0,1]$ be defined as
+
+\begin{align*}
+  p_i(d) & = \sum_{\substack{s\in\mathit{St}\\s(z_i) = \mathit{true}}}d(s) && \text{for }1\leq i\leq n
+\end{align*}
+
+Then we may define our Galois Connection $\alpha : P(\mathit{Dist})\rightleftarrows \mathit{RA} : \gamma$ by:
+
+\begin{align*}
+  \alpha(D) & = \lambda z_i\ldotp~\alpha_0(\{p_i(d) : d\in D\}) \\
+  \gamma(a) & = \{d\in\mathit{Dist}:\forall z_i\in\mathit{Var}\ldotp~p_i(d)\in\gamma_0(a(z_i))\}
+\end{align*}
+
+\begin{prop}
+  $\alpha$, $\gamma$ forms a Galois Connection.\\
+  It suffices to show that
+  \begin{enumerate}[(i)]
+    \item $\alpha$ is monotone
+    \item $\gamma$ is monotone
+    \item $\forall a\in\mathit{RA},D\in\mathit{Dist}\ldotp~\alpha(D)\sqsubseteq a\iff D\subseteq\gamma(a)$
+  \end{enumerate}
+
+  \begin{proof}[Proof (i)]
+    let $D\subseteq D^\prime\subseteq\mathit{Dist}$
+    \begin{itemize}
+      \step[\imps] $\forall z_i\in\mathit{Var}\ldotp~\{p_i(d) : d\in D\} \subseteq \{p_i(d^\prime) : d^\prime\in D^\prime\}$
+      \step[\imps] $\forall z_i\in\mathit{Var}\ldotp~\alpha_0(\{p_i(d) : d\in D\}) \sqsubseteq \alpha_0(\{p_i(d^\prime) : d^\prime\in D^\prime\})$
+      \marginnote{$\alpha_0$ is monotonic}
+      \step[\iffs] $\forall z_i\in\mathit{Var}\ldotp~\alpha(D)(z_i) \sqsubseteq\alpha(D^\prime)(z_i)$
+      \marginnote{Definition of $\alpha$}
+      \step[\iffs] $\alpha(D)\sqsubseteq\alpha(D^\prime)$\qedhere
+      \marginnote{Definition of $\sqsubseteq_{\mathit{RA}}$}
+    \end{itemize}
+  \end{proof}
+
+  \begin{proof}[Proof (ii)]
+    Let $a,a^\prime\in\mathit{RA}$
+    \begin{itemize}
+      \step Suppose $a\sqsubseteq a^\prime$
+      \step[\iffs] $\forall z_i\in\mathit{Var}\ldotp~a(z_i)\sqsubseteq a^\prime(z_i)$
+      \marginnote{Definition of $\sqsubseteq_{\mathit{RA}}$}
+      \step[\imps] $\forall z_i\in\mathit{Var}\ldotp~\gamma_0(a(z_i))\subseteq\gamma_0(a^\prime(z_i))$\hfill($\star$)
+      \marginnote{$\gamma_0$ is monotonic}
+      \step Let $d\in\gamma(a)$
+      \step[\iffs] $\forall z_i\in\mathit{Var}\ldotp~p_i(d)\in\gamma_0(a(z_i))$
+      \marginnote{Definition of $\gamma$}
+      \step[\imps] $\forall z_i\in\mathit{Var}\ldotp~p_i(d)\in\gamma_0(a^\prime(z_i))$
+      \marginnote{by $\star$}
+      \step[\imps] $d\in\gamma(a^\prime)$
+      \marginnote{Definition of $\gamma$}
+      \step[\imps] $\gamma(a)\subseteq\gamma(a^\prime)$\qedhere
+    \end{itemize}
+  \end{proof}
+
+  \begin{proof}[Proof (iii)]
+    Let $a\in\mathit{RA},D\subseteq\mathit{Dist}$ and suppose $\alpha(D)\sqsubseteq a$
+    \begin{itemize}
+      \step[\iffs] $\forall z_i\in\mathit{Var}\ldotp~\alpha(D)(z_i)\sqsubseteq a(z_i)$
+      \marginnote{Definition of $\sqsubseteq_{\mathit{RA}}$}
+      \step[\iffs] $\forall z_i\in\mathit{Var}\ldotp~\alpha_0(\{p_i(d) : d\in D\})\sqsubseteq a(z_i)$
+      \marginnote{Definition of $\alpha$}
+      \step[\iffs] $\forall z_i\in\mathit{Var}\ldotp~\{p_i(d) : d\in D\}\subseteq \gamma_0(a(z_i))$
+      \marginnote{$(\alpha_0,\gamma_0)$ is a Galois Connection}
+      \step[\iffs] $\forall z_i\in\mathit{Var}\ldotp\forall d\in D\ldotp~p_i(d)\in\gamma_0(a(z_i))$
+      \marginnote{Definition of $\subseteq$}
+      \step[\iffs] $\forall d\in D\ldotp\forall z_i\in\mathit{Var}\ldotp~p_i(d)\in\gamma_0(a(z_i))$
+      \marginnote{Swap $\forall$}
+      \step[\iffs] $\forall d\in D\ldotp~d\in\{d\in\mathit{Dist} : \forall z_i\in\mathit{Var}\ldotp~p_i(d)\in\gamma_0(a(z_i))\}$
+      \step[\iffs] $D\subseteq\{d\in\mathit{Dist} : \forall z_i\in\mathit{Var}\ldotp~p_i(d)\in\gamma_0(a(z_i))\}$
+      \marginnote{Definition of $\subseteq$}
+      \step[\iffs] $D\subseteq\gamma(a)$\qedhere
+      \marginnote{Definition of $\gamma$}
+    \end{itemize}
+  \end{proof}
+\end{prop}
+
 \subsection{Part (b)}\label{sec:q-3-b}
 
 \subsection{Part (c)}\label{sec:q-3-c}
