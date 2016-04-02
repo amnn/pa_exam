@@ -7,7 +7,6 @@ Let $p_i : \mathit{Dist}\to[0,1]$ be defined as
 \end{align*}
 
 Then we may define our Galois Connection $\alpha : P(\mathit{Dist})\rightleftarrows \mathit{RA} : \gamma$ by:
-
 \begin{align*}
   \alpha(D) & = \lambda z_i\ldotp~\alpha_0(\{p_i(d) : d\in D\}) \\
   \gamma(a) & = \{d\in\mathit{Dist}:\forall z_i\in\mathit{Var}\ldotp~p_i(d)\in\gamma_0(a(z_i))\}
@@ -115,6 +114,7 @@ Consider Algorithm~\ref{alg:close-ra}, in order to prove its correctness, it suf
         \step $P_i = \{p_i(d) : d\in\mathit{Dist},\forall z_j\in\mathit{Var}\ldotp~p_j(d)\in\gamma_0(a(z_j))\}$
       \end{itemize}
     \end{itemize}
+    ~\\[1em]
     \begin{proof}[Case 1, $\exists z_k\in\mathit{Var}\ldotp~a(z_k)=\bot$]
       \begin{itemize}
         \step
@@ -131,6 +131,7 @@ Consider Algorithm~\ref{alg:close-ra}, in order to prove its correctness, it suf
         \step[\imps] $\alpha(\gamma(a)) = \lambda z_i\ldotp\bot$\qedhere
       \end{itemize}
     \end{proof}
+    ~\\[1em]
     \begin{proof}[Case 2, {$\forall z_j\in\mathit{Var}\ldotp\exists l_j,u_j\in[0,1]\ldotp~l_j\leq u_j\wedge a(z_j) = [l_j,u_j]$}]
       \begin{itemize}
         \step
@@ -225,6 +226,7 @@ In order to prove correctness, we show that the function computed by Algorithm~\
       \end{flalign*}
     \end{itemize}
 
+    ~\\[1em]
     \begin{proof}[Case 1, $\exists z_k\in\mathit{Var}\ldotp~a(z_k)=\bot$]~\\[1em]
         By a similar argument to Case 1 in Proposition~\ref{prop:close-correct}, (Correctness of the Closure algorithm):
       \begin{flalign*}
@@ -237,6 +239,7 @@ In order to prove correctness, we show that the function computed by Algorithm~\
       \end{itemize}
     \end{proof}
 
+    ~\\[1em]
     \begin{proof}[Case 2, ${\forall z_k\in\mathit{Var}\ldotp\exists l_k,u_k\in[0,1]\ldotp~l_k\leq u_k\wedge a(z_k)=[l_k,u_k]}$]
       \begin{flalign*}
         \makebox[2.2em]{}
@@ -262,7 +265,7 @@ In order to prove correctness, we show that the function computed by Algorithm~\
         \\ & & & 0.3\sum_{\substack{s\in\mathit{St}\\s(z_i)=\mathit{true}\\s(z_1)=\mathit{true}}}d(s) + 0.3\sum_{\substack{s\in\mathit{St}\\s(z_i)=\mathit{true}\\s(z_1)=\mathit{false}}} d(s) &&
         \\ && : &~d\in\mathit{Dist},~\forall z_j\in\mathit{Var}\ldotp~l_j\leq p_j(d)\leq u_j\} &&
         \\ & = & \{ & \sum_{\substack{s\in\mathit{St}\\s(z_i)=\mathit{true}\\s(z_1)=\mathit{true}}}d(s) + \sum_{\substack{s\in\mathit{St}\\s(z_i)=\mathit{true}\\s(z_1)=\mathit{false}}}d(s) &&
-        \mathnote{Factorising common summations out.}
+        \mathnote{Gathering common summations together.}
         \\ && : &~d\in\mathit{Dist},~\forall z_j\in\mathit{Var}\ldotp~l_j\leq p_j(d)\leq u_j\} &&
         \\ & = & \{ & \sum_{\substack{s\in\mathit{St}\\s(z_i)=\mathit{true}}}d(s) : d\in\mathit{Dist},~\forall z_j\in\mathit{Var}\ldotp~l_j\leq p_j(d)\leq u_j\} &&
         \mathnote{Joining ranges of summations.}
