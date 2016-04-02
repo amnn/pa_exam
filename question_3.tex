@@ -77,5 +77,106 @@ Then we may define our Galois Connection $\alpha : P(\mathit{Dist})\rightleftarr
 \end{prop}
 
 \subsection{Part (b)}\label{sec:q-3-b}
+\begin{algorithm}[htbp]
+  \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+
+  \Input{$a\in\mathit{RA} = (\mathit{Var}\to\mathit{Range})$, a mapping in the abstract domain.}
+  \Output{$\alpha(\gamma(a))$}
+  \Begin{
+      \For{$z_i\in\mathit{Var}$}{
+        \If{$a(z_i) = \bot$} {
+          return $\lambda z\ldotp\bot$\;
+        }
+      }
+      return $a$\;
+    }
+  \caption{Closure in $\mathit{RA}$}\label{alg:close-ra}
+\end{algorithm}
+
+Consider Algorithm~\ref{alg:close-ra}, in order to prove its correctness, it suffices to equate the function it calculates with $\alpha\compose\gamma$, that is to say:
+\begin{prop}
+  \begin{align*}
+    \alpha(\gamma(a)) & =
+    \begin{cases}
+      \lambda z_i\ldotp\bot & \exists z_j\in\mathit{Var}\ldotp~a(z_j) = \bot\\
+      a & \text{otherwise}
+    \end{cases}
+  \end{align*}
+
+  \begin{proof}
+    Let $a\in\mathit{RA}$
+    \begin{itemize}
+      \step $\alpha(\gamma(a))$
+      \step[=] $\alpha(\{d\in\mathit{Dist} : \forall z_j\in\mathit{Var}\ldotp~p_j(d)\in\gamma_0(a(z_j))\})$
+      \marginnote{Definition of $\gamma$}
+      \step[=] $\lambda z_i\ldotp\alpha_0(P_i)$ where
+      \marginnote{Definition of $\alpha$}
+      \begin{itemize}
+        \step $P_i = \{p_i(d) : d\in\mathit{Dist},\forall z_j\in\mathit{Var}\ldotp~p_j(d)\in\gamma_0(a(z_j))\}$
+      \end{itemize}
+    \end{itemize}
+    \begin{proof}[Case 1, $\exists z_k\in\mathit{Var}\ldotp~a(z_k)=\bot$]
+      \begin{itemize}
+        \step
+        \begin{itemize}
+          \step
+          \begin{flalign*}
+            \makebox[.5em]{}P_i & \subseteq \{p_i(d):d\in\mathit{Dist},~p_k(d)\in\gamma_0(a(z_k))\} &&
+            \\ & = \{p_i(d):d\in\mathit{Dist},~p_k(d)\in\gamma_0(\bot)\} &&
+            \\ & = \{p_i(d):d\in\mathit{Dist},~p_k(d)\in\varnothing\} &&
+            \\ & = \varnothing
+          \end{flalign*}
+        \end{itemize}
+        \step[\imps] $\alpha(\gamma(a)) = \lambda z_i\ldotp\alpha_0(\varnothing)$
+        \step[\imps] $\alpha(\gamma(a)) = \lambda z_i\ldotp\bot$\qedhere
+      \end{itemize}
+    \end{proof}
+    \begin{proof}[Case 2, {$\forall z_j\in\mathit{Var}\ldotp\exists l_j,u_j\in[0,1]\ldotp~l_j\leq u_j\wedge a(z_j) = [l_j,u_j]$}]
+      \begin{itemize}
+        \step
+        \begin{itemize}
+          \step
+          \begin{flalign*}
+           \makebox[.5em]{}P_i & = \{p_i(d):d\in\mathit{Dist},\forall z_j\in\mathit{Var}\ldotp~l_j\leq p_j(d)\leq u_j\}&&
+          \end{flalign*}
+
+        \end{itemize}
+        \step Lemma~\ref{lem:dist-feasible} states that for any mapping of variables to probabilities, it is possible to find a distribution over states that achieves that mapping.
+        \step[\imps] $\exists d\in\mathit{Dist}\ldotp\forall z_i\in\mathit{Var}\ldotp~p_i(d) = l_i$
+        \itemsep-.1em
+        \step[\wedge] $\exists d\in\mathit{Dist}\ldotp\forall z_i\in\mathit{Var}\ldotp~p_i(d) = u_i$
+        \itemsep.5em
+        \step[\imps] $\forall z_i\in\mathit{Var}\ldotp~\inf(P_i) = l_i \wedge\sup(P_i) = u_i$
+        \step[\imps] $\alpha(\gamma(a)) = \lambda z_i\ldotp[l_i,u_i]$
+        \step[\imps] $\alpha(\gamma(a)) = a$\qedhere
+      \end{itemize}
+    \end{proof}
+  \end{proof}
+\end{prop}
+
+\begin{lemma}\label{lemma:dist-feasible}
+  $\forall p : \mathit{Var}\to[0,1]\ldotp\exists d\in\mathit{Dist}\ldotp\forall z_i\in\mathit{Var}\ldotp~p(z_i) = p_i(d)$
+  \begin{proof}
+    Let $p : \mathit{Var}\to[0,1]$\\
+    \noindent
+    Consider the following linear system:
+    \begin{align*}
+      \sum_{\substack{s\in\mathit{St}\\s(z_i)=\mathit{true}}}d(s) & = p(z_i) &&\text{for } z_i\in\mathit{Var}\\
+      \sum_{\substack{s\in\mathit{St}\\\phantom{s(z_i)=\mathit{true}}}} d(s) & = 1
+    \end{align*}
+    There are $2^n$ variables (in the system) --- corresponding to subsets of $\mathit{Var}$ --- and $n + 1$ constraints (one for each $z_i\in\mathit{Var}$, and an additional one to ensure that $d$ is a distribution)\\[1em]
+
+    This can be interpreted in matrix form as $Sd = p$, where ${S\in\mathbb{B}^{(n+1)\times2^n}}$, ${d\in[0,1]^{2^n}}$, and ${p\in[0,1]^{n+1}}$. In this form, each row of $S$ is linearly independent, by their construction from the above constraints. Furthermore, as $\forall n\geq 0\ldotp~2^n\geq n+1$ there are always at least as many variables as constraints.\\[1em]
+
+    \noindent
+    $\implies$ $S$ has full rank.\\[1em]
+
+    \noindent
+    $\implies$ By Rouch\'e-Capelli theorem, the linear system is consistent.\\[1em]
+
+    \noindent
+    $\implies \exists d\in\mathit{Dist}\ldotp\forall z_i\in\mathit{Var}\ldotp~p(z_i) = p_i(d)$\qedhere
+  \end{proof}
+\end{lemma}
 
 \subsection{Part (c)}\label{sec:q-3-c}
