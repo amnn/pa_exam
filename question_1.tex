@@ -114,7 +114,7 @@ Defined respectively according to:
       \end{bmatrix}^\ast
       \Widen
       \begin{bmatrix}
-        0 & 1 & \infty \\
+        0 & \infty & 1 \\
         1 & 0 & 1 \\
         1 & 1 & 0
       \end{bmatrix}
@@ -127,7 +127,7 @@ Defined respectively according to:
       \end{bmatrix}
       \Widen
       \begin{bmatrix}
-        0 & 1 & \infty \\
+        0 & \infty & 1 \\
         1 & 0 & 1 \\
         1 & 1 & 0
       \end{bmatrix}
@@ -294,7 +294,7 @@ And some lemmas relating to how it interacts with narrowing and closure, which m
   \begin{proof}[Proof by contradiction]
     Suppose for a contradiction ${\exists m\in\mathit{Zon}.~\Infty(\alpha_z(\gamma_z(m))) > \Infty(m)}$
     \begin{itemize}
-      \step[\imps] $\exists1\leq i, j\leq n+1.~m_{ij}=\infty\wedge\alpha_z(\gamma_z(m))_{ij} = \infty$
+      \step[\imps] $\exists1\leq i, j\leq n+1.~m_{ij}\neq\infty\wedge\alpha_z(\gamma_z(m))_{ij} = \infty$
       \step[\imps] $\alpha_z(\gamma_z(m))\not\sqsubseteq m$
       \marginnote{$\alpha_z(\gamma_z(m))_{ij}>m_{ij}$}
       \step[\contras] $\alpha_z\compose\gamma_z\sqsubseteq\id_{\mathit{Zon}}$

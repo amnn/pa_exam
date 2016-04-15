@@ -84,10 +84,10 @@ Then we may define our Galois Connection $\alpha : P(\mathit{Dist})\rightleftarr
   \Begin{
       \For{$z_i\in\mathit{Var}$}{
         \If{$a(z_i) = \bot$} {
-          return $\lambda z\ldotp\bot$\;
+          \KwRet $\lambda z\ldotp\bot$\;
         }
       }
-      return $a$\;
+      \KwRet $a$\;
     }
   \caption{Closure in $\mathit{RA}$}\label{alg:close-ra}
 \end{algorithm}
@@ -191,10 +191,10 @@ Consider Algorithm~\ref{alg:close-ra}, in order to prove its correctness, it suf
   \Begin{
       $a^\prime\gets$ \Closure{$a$}\;
       \uIf{$a^\prime(z_1) = \bot$} {
-        return $a^\prime$\;
+        \KwRet $a^\prime$\;
       } \Else{
         \tcc{$\oplus$ is a map overwrite/update operation.}
-        return $a^\prime\oplus(z_1\mapsto[0.7,0.7])$\;
+        \KwRet $a^\prime\oplus(z_1\mapsto[0.7,0.7])$\;
       }
     }
   \caption{Best abstraction for $\sembrack{z_1 = \operatorname{flip}(0.7)}^\flat$}\label{alg:flip}
